@@ -80,6 +80,7 @@ jaeger_submit(fq_msg **msg, int cnt) {
   for(i=0;i<cnt;i++) plen += msg[i]->payload_len;
   if(plen > payload_len) {
     free(payload);
+    payload = NULL;
     payload_len = plen;
   }
   if(!payload) payload = malloc(payload_len);
@@ -204,6 +205,7 @@ int main(int argc, char **argv) {
     }
     if(cnt > 0) {
       jaeger_submit(msg, cnt);
+      printf("submitted %d spans\n", cnt);
       for(i=0;i<cnt;i++) fq_msg_deref(msg[i]);
     } else {
       usleep(1000);
