@@ -117,6 +117,9 @@ jaeger_submit(fq_msg **msg, int cnt) {
     if(CURLE_OK == code)
       curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpcode);
   } while(retries > 0 && (httpcode < 200 || httpcode > 299));
+  if(httpcode < 200 || httpcode > 299) {
+    fprintf(stderr, "error submitting: %s\n", error);
+  }
 }
 
 void usage(const char *prog) {
