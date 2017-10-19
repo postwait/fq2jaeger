@@ -95,7 +95,7 @@ jaeger_submit(fq_msg **msg, int cnt) {
   if(!curl) {
     char url[1024];
     struct curl_slist *headers=NULL;
-    snprintf(url, sizeof(url), "http://%s:%d/api/traces?format=zipkin.thrift",
+    snprintf(url, sizeof(url), "http://%s:%d/api/v1/spans",
              jaeger_host, jaeger_port);
     headers = curl_slist_append(headers, "Content-Type: application/x-thrift");
     curl = curl_easy_init();
@@ -107,7 +107,7 @@ jaeger_submit(fq_msg **msg, int cnt) {
     curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT_MS, jaeger_connect_timeout_ms);
   }
   curl_easy_setopt(curl, CURLOPT_POSTFIELDS, (void *)payload);
-  curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, payload_len);
+  curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, plen);
   curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, error);
 
   do {
